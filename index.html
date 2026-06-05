@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cyber Body Forge</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="./css/styles.css">
+    <script type="module" src="./js/main.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          
+          <h1>Cyber Body Forge</h1>
+        </div>
+        <div class="status-chip">
+          <span class="status-dot"></span>
+          Runtime activo
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Constructor de personaje">
+        <aside class="panel">
+          <div class="panel-title">
+            <span>01</span>
+            <h2>Configuracion</h2>
+          </div>
+
+          <form id="componentForm" class="component-form">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="componentType" class="form-label">Tipo</label>
+                <select class="form-select" id="componentType" name="tipo" required>
+                  <option value="biomecanico">Biomecanico</option>
+                  <option value="neurodigital">Neurodigital</option>
+                </select>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="slot" class="form-label">Ranura</label>
+                <select class="form-select" id="slot" name="slot" required>
+                  <option value="head">Slot A - Cabeza</option>
+                  <option value="torso">Slot B - Torso</option>
+                  <option value="left-arm">Slot C - Brazo izquierdo</option>
+                  <option value="right-arm">Slot D - Brazo derecho</option>
+                  <option value="legs">Slot E - Piernas</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label for="nombre" class="form-label">Nombre del item</label>
+                <input
+                  class="form-control"
+                  id="nombre"
+                  name="nombre"
+                  minlength="3"
+                  placeholder="Ej: Neural Interface V1"
+                  required
+                >
+              </div>
+
+              <div class="col-12 col-md-4">
+                <label for="rareza" class="form-label">Rareza</label>
+                <select class="form-select" id="rareza" name="rareza" required>
+                  <option>Comun</option>
+                  <option>Raro</option>
+                  <option>Epico</option>
+                  <option>Legendario</option>
+                </select>
+              </div>
+
+              <div class="col-6 col-md-4">
+                <label for="costoHumanidad" class="form-label">Humanidad</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="costoHumanidad"
+                  name="costoHumanidad"
+                  min="0"
+                  max="100"
+                  value="12"
+                  required
+                >
+              </div>
+
+              <div class="col-6 col-md-4">
+                <label for="poder" class="form-label">Poder</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="poder"
+                  name="poder"
+                  min="1"
+                  max="100"
+                  value="75"
+                  required
+                >
+              </div>
+            </div>
+
+            <fieldset id="biomechanicFields" class="type-box">
+              <legend>Datos biomecanicos</legend>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="resistencia" class="form-label">Resistencia</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="resistencia"
+                    name="resistencia"
+                    min="1"
+                    max="100"
+                    value="60"
+                  >
+                </div>
+                <div class="col-6">
+                  <label for="energia" class="form-label">Energia</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="energia"
+                    name="energia"
+                    min="1"
+                    max="100"
+                    value="80"
+                  >
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset id="neuroFields" class="type-box" hidden>
+              <legend>Datos neurodigitales</legend>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label for="procesamiento" class="form-label">Procesamiento</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="procesamiento"
+                    name="procesamiento"
+                    min="1"
+                    max="100"
+                    value="88"
+                  >
+                </div>
+                <div class="col-6">
+                  <label for="slotsVirtuales" class="form-label">Slots virtuales</label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="slotsVirtuales"
+                    name="slotsVirtuales"
+                    min="1"
+                    max="8"
+                    value="2"
+                  >
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="action-row">
+              <button class="btn btn-primary" type="submit">Configurar pieza</button>
+              <button class="btn btn-outline-light" type="button" id="clearButton">Reiniciar</button>
+            </div>
+          </form>
+        </aside>
+
+        <section class="assembly-stage" aria-label="Modulo de ensamblaje">
+          <div class="stage-header">
+            <div>
+              <p class="eyebrow">Modulo de Ensamblaje</p>
+              <h2>Slots A-E</h2>
+            </div>
+            <button class="btn btn-sm btn-outline-warning" type="button" id="forceErrorButton">
+              Forzar error
+            </button>
+          </div>
+
+          <div class="human-zone" id="humanFigure">
+            <img src="./assets/Humano.png" alt="Figura humana para ensamblaje cybernetico">
+            <span class="figure-marker figure-marker--head" data-figure-slot="head">Slot A</span>
+            <span class="figure-marker figure-marker--torso" data-figure-slot="torso">Slot B</span>
+            <span class="figure-marker figure-marker--left-arm" data-figure-slot="left-arm">Slot C</span>
+            <span class="figure-marker figure-marker--right-arm" data-figure-slot="right-arm">Slot D</span>
+            <span class="figure-marker figure-marker--legs" data-figure-slot="legs">Slot E</span>
+          </div>
+        </section>
+
+        <aside class="panel telemetry-panel">
+          <div class="panel-title">
+            <span>02</span>
+            <h2>Telemetria</h2>
+          </div>
+
+          <div class="slot-stack">
+            <article class="slot-card" data-slot-card="head">
+              <div><strong>Slot A</strong><span>HEAD</span></div>
+              <p data-slot-state>[OPEN]</p>
+              <small data-slot-name>Ranura disponible</small>
+              <em data-slot-detail>Slot A listo para instalacion.</em>
+            </article>
+
+            <article class="slot-card" data-slot-card="torso">
+              <div><strong>Slot B</strong><span>TORSO</span></div>
+              <p data-slot-state>[OPEN]</p>
+              <small data-slot-name>Ranura disponible</small>
+              <em data-slot-detail>Slot B listo para instalacion.</em>
+            </article>
+
+            <article class="slot-card" data-slot-card="left-arm">
+              <div><strong>Slot C</strong><span>LEFT ARM</span></div>
+              <p data-slot-state>[OPEN]</p>
+              <small data-slot-name>Ranura disponible</small>
+              <em data-slot-detail>Slot C listo para instalacion.</em>
+            </article>
+
+            <article class="slot-card" data-slot-card="right-arm">
+              <div><strong>Slot D</strong><span>RIGHT ARM</span></div>
+              <p data-slot-state>[OPEN]</p>
+              <small data-slot-name>Ranura disponible</small>
+              <em data-slot-detail>Slot D listo para instalacion.</em>
+            </article>
+
+            <article class="slot-card" data-slot-card="legs">
+              <div><strong>Slot E</strong><span>LEGS</span></div>
+              <p data-slot-state>[OPEN]</p>
+              <small data-slot-name>Ranura disponible</small>
+              <em data-slot-detail>Slot E listo para instalacion.</em>
+            </article>
+          </div>
+
+          <div class="humanity-box">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong>Humanidad</strong>
+              <span id="humanityValue">100/100</span>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Barra de humanidad">
+              <div id="humanityBar" class="progress-bar" style="width: 100%"></div>
+            </div>
+          </div>
+
+          <div class="installed-box">
+            <strong>Implantes instalados</strong>
+            <ul id="installedList"></ul>
+          </div>
+
+          <div class="console-box">
+            <strong>Consola de activacion</strong>
+            <ul id="consoleOutput"></ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>
